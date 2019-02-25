@@ -24,8 +24,6 @@ import os
 import pickle
 import random
 from numba import jit
-import yonezu as yz
-
 
 class MTGPRegression(object):
 	"""
@@ -470,3 +468,28 @@ class MTGPRegression(object):
 
 		""" return predictive distribution """
 		return pred_dist
+
+def marge_grid(x1,x2):
+
+    x1 = np.atleast_2d(x1)
+    x2 = np.atleast_2d(x2)
+
+    x1size = np.shape(x1)[0]
+    x2size = np.shape(x2)[0]
+
+    X = np.c_[np.repeat(x1,x2size,axis=0),np.tile(x2,(x1size,1))]
+
+    return X
+
+def gen_mesh(argX):
+
+    if np.shape(argX)[0] == 0:
+        print("You should at least 2 arguments.")
+        sys.exit()
+
+    X = argX[0]
+
+    for x in argX[1:]:
+        X = marge_grid(X,x)
+
+    return X
