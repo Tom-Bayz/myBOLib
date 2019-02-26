@@ -14,7 +14,6 @@ from matplotlib import pyplot as plt
 from numba import jit
 from numpy.linalg import norm
 
-
 class LP(object):
 
 	def __init__(self,Lipschitz_const=5,type="EI"):
