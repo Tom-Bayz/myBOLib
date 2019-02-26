@@ -24,12 +24,12 @@ GP = bol.GPR.GPRegression(allX=X, allY=Y,kernel=kernel, input_dim=d)
 ##### set acquisition function #####
 #acquisition = af.asyEI(sampleN = 500,visualize = True)
 #acquisition = af.PMES(sampleN = 50,visualize = True)
-#acquisition = af.mRMR(sampleN = 20,visualize = True,type="div")
+acquisition = af.mRMR(sampleN = 20,visualize = True,type="div")
 #acquisition = af.EI(visualize = True)
-acquisition = af.BUCB(visualize = True)
+#acquisition = af.BUCB(visualize = True)
 
 ##### Parallel BO instance #####
-PBO = bol.PBO.Parallel_BayesOpt(GPR=GP,acq=acquisition,J=2)
+PBO = bol.PBO.Parallel_BayesOpt(GPR=GP,acq=acquisition,J=1)
 PBO.set_initial(seed=0,dataN=3)
 PBO.set_logINFO(dir_name="./",file_name="pbo_log.csv",interval=3)
 regret_result = PBO.optimize(T=5,model_selection=None)
