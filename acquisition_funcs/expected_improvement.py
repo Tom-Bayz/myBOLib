@@ -66,7 +66,7 @@ class EI(object):
 
 		return nextID, np.max(ei)
 
-	
+	def plot():
 		Lcb = mu - np.sqrt(var)
 		Ucb = mu + np.sqrt(var)
 

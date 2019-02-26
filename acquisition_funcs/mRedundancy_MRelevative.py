@@ -171,6 +171,9 @@ class mRMR(object):
 
 		acq = mrmr
 
+		acq[model.trainID] = -np.inf
+		acq[batch_point] = -np.inf
+
 		##### maximize acquisition #####
 		nextID = np.argmax(acq)
 

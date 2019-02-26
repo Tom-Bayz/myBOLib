@@ -198,6 +198,9 @@ class PMES(object):
 
 		acq = pmes
 
+		acq[model.trainID] = -np.inf
+		acq[batch_point] = -np.inf
+
 		###### maxmize acquisition #####
 		nextID = np.argmax(acq)
 
