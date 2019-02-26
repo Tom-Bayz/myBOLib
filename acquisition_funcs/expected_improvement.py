@@ -24,7 +24,7 @@ class EI(object):
 			return self.get_multiID(model=model, batch_point=batch_point)
 		
 		else:
-			print("asyEI: Error invalid regression model!!")
+			print("EI: Error invalid regression model!!")
 			sys.exit()
 	
 	def get_multiID(self,model,batch_point):
@@ -66,7 +66,7 @@ class EI(object):
 
 		return nextID, np.max(ei)
 
-	def plot():
+	
 		Lcb = mu - np.sqrt(var)
 		Ucb = mu + np.sqrt(var)
 
