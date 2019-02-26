@@ -63,10 +63,12 @@ class asyEI(object):
 			print("asyEI: Error invalid regression model!!")
 			sys.exit()
 	
+	@jit
 	def get_multiID(self,model,batch_point):
 		print("this process is not prepared...")
 		sys.exit()
 	
+	@jit
 	def get_singleID(self,model,batch_point):
 
 		J = np.shape(batch_point)[0]
