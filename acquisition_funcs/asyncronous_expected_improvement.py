@@ -114,6 +114,8 @@ class asyEI(object):
 
 		if np.shape([nextID])[0] > 1:
 			nextID = np.random.choice(nextID)
+		
+		return nextID, max(acq)
 
 		def plot():
 			Lcb = mu - np.sqrt(var)
@@ -166,4 +168,4 @@ class asyEI(object):
 			plt.savefig("./fig_asyEI/step"+"%04d"%t+".pdf",bbox_inches="tight")
 			plt.close()
 		
-		return nextID, max(acq)
+		
