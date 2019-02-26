@@ -112,18 +112,28 @@ class PMES(object):
 		pmes = joint_entropy - cnd_entropy
 
 		return [pmes, first_term, second_term]
-
-	#@jit
+	
 	def get_nextID(self,model=None,batch_point=None):
+
+		if model.name == "Gaussian process":
+			return self.get_singleID(model=model, batch_point=batch_point)
+
+		elif model.name == "Multi-task Gaussian process":
+			return self.get_multiID(model=model, batch_point=batch_point)
+		
+		else:
+			print("BUCB: Error invalid regression model!!")
+			sys.exit()
+
+	def get_multiID(self,model,batch_point):
+		print("this process is not prepared...")
+		sys.exit()
+	
+	def get_singleID(self,model,batch_point):
 
 		J = np.shape(batch_point)[0]
 		N = np.shape(model.allX)[0]
 		current_max = np.max(model.allY[np.sort(model.trainID)])
-
-		##### check model #####
-		if model.name != "Gaussian Process":
-			print("PMES can be calcurated only from Gaussian Process model.")
-			return False
 
 		elapsed_time = time.time()
 
@@ -194,61 +204,58 @@ class PMES(object):
 		if np.shape([nextID])[0] > 1:
 			nextID = np.random.choice(nextID)
 
-
-		#"""
-		##### plot true function and posterior #####
-		if self.visualize and (np.shape(model.allX)[1] == 1):
-
-			Lcb = mu - np.sqrt(var)
-			Ucb = mu + np.sqrt(var)
-
-			x = model.allX[:,0]
-			y = model.allY
-
-			fig, ax = plt.subplots(3, 1, figsize=(5, 7))
-
-			ax[0].grid(True)
-			ax[0].plot(x, y, "--", color="red") # true function
-			ax[0].set_xlabel(r"$x$",fontsize=15)
-			ylim = np.array(ax[0].set_ylim())*1.1
-			ax[0].set_ylim(ylim)
-			ax[0].set_xlim(min(x),max(x))
-			ax[0].fill_between(x, Ucb, Lcb, color="blue", alpha=0.4,label="Uncertainty: "+r"$\sigma^2(x)$") # post var
-			ax[0].plot(x, y, "--", color="red",label="Unknown function:" + r"$f(x)$") # true function
-			ax[0].plot(x, mu, "-", color="blue",label="Predictiion: "+r"$\mu(x)$") # post var
-
-			##### plot training point and calcurating point #####
-			ax[0].plot(x[model.trainID], y[model.trainID], "s", color="black",label="observed data")
-			ax[0].plot(x[batch_point], y[batch_point], "o",marker=">", color="black",label="batch points")
-			ax[0].legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=12)
-
-
-			##### plot acquisition function #####
-			ax[1].set_xlim(min(x),max(x))
-			ax[1].set_xlabel(r"$x$",fontsize=15)
-			ax[1].grid(True)
-			ax[1].plot(x,acq,color="#228b22",label="PMES")
-			ylim = ax[1].set_ylim()
-			ax[1].plot([x[nextID]],[acq[nextID]],"o",marker="*",markersize=10,color="red")
-			ax[1].fill_between(x,ylim[0]*np.ones(N),acq,color="#228b22",alpha=0.5)
-			ax[1].legend()
-
-			ax[2].set_xlim(min(x),max(x))
-			ax[2].grid(True)
-			ax[2].set_xlabel(r"$x$",fontsize=15)
-			ax[2].plot(x,first_term,color="red",label=r"$H[p(y)]$")
-			ax[2].plot(x,-second_term,color="blue",label=r"$H[p(y|y^*)]$")
-			ylim = ax[2].set_ylim()
-			ax[2].fill_between(x,ylim[0]*np.ones(N),first_term,color="red",alpha=0.5)
-			ax[2].fill_between(x,ylim[0]*np.ones(N),-second_term,color="blue",alpha=0.5)
-			ax[2].legend()
-
-			if not(os.path.exists("./fig_PMES")):
-				os.mkdir("./fig_PMES")
-
-			t = np.shape(model.trainID)[0]
-			plt.savefig("./fig_PMES/step"+"%04d"%t+".pdf",bbox_inches="tight")
-			plt.close()
-			#"""
-
 		return nextID, max(acq)
+	
+	def plot():
+
+		##### plot true function and posterior #####
+		Lcb = mu - np.sqrt(var)
+		Ucb = mu + np.sqrt(var)
+
+		x = model.allX[:,0]
+		y = model.allY
+
+		fig, ax = plt.subplots(3, 1, figsize=(5, 7))
+
+		ax[0].grid(True)
+		ax[0].plot(x, y, "--", color="red") # true function
+		ax[0].set_xlabel(r"$x$",fontsize=15)
+		ylim = np.array(ax[0].set_ylim())*1.1
+		ax[0].set_ylim(ylim)
+		ax[0].set_xlim(min(x),max(x))
+		ax[0].fill_between(x, Ucb, Lcb, color="blue", alpha=0.4,label="Uncertainty: "+r"$\sigma^2(x)$") # post var
+		ax[0].plot(x, y, "--", color="red",label="Unknown function:" + r"$f(x)$") # true function
+		ax[0].plot(x, mu, "-", color="blue",label="Predictiion: "+r"$\mu(x)$") # post var
+
+		##### plot training point and calcurating point #####
+		ax[0].plot(x[model.trainID], y[model.trainID], "s", color="black",label="observed data")
+		ax[0].plot(x[batch_point], y[batch_point], "o",marker=">", color="black",label="batch points")
+		ax[0].legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=12)
+
+
+		##### plot acquisition function #####
+		ax[1].set_xlim(min(x),max(x))
+		ax[1].set_xlabel(r"$x$",fontsize=15)
+		ax[1].grid(True)
+		ax[1].plot(x,acq,color="#228b22",label="PMES")
+		ylim = ax[1].set_ylim()
+		ax[1].plot([x[nextID]],[acq[nextID]],"o",marker="*",markersize=10,color="red")
+		ax[1].fill_between(x,ylim[0]*np.ones(N),acq,color="#228b22",alpha=0.5)
+		ax[1].legend()
+
+		ax[2].set_xlim(min(x),max(x))
+		ax[2].grid(True)
+		ax[2].set_xlabel(r"$x$",fontsize=15)
+		ax[2].plot(x,first_term,color="red",label=r"$H[p(y)]$")
+		ax[2].plot(x,-second_term,color="blue",label=r"$H[p(y|y^*)]$")
+		ylim = ax[2].set_ylim()
+		ax[2].fill_between(x,ylim[0]*np.ones(N),first_term,color="red",alpha=0.5)
+		ax[2].fill_between(x,ylim[0]*np.ones(N),-second_term,color="blue",alpha=0.5)
+		ax[2].legend()
+
+		if not(os.path.exists("./fig_PMES")):
+			os.mkdir("./fig_PMES")
+
+		t = np.shape(model.trainID)[0]
+		plt.savefig("./fig_PMES/step"+"%04d"%t+".pdf",bbox_inches="tight")
+		plt.close()
