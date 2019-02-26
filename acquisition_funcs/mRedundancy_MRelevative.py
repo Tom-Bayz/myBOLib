@@ -86,7 +86,7 @@ class mRMR(object):
 			return self.get_multiID(model=model, batch_point=batch_point)
 		
 		else:
-			print("BUCB: Error invalid regression model!!")
+			print("mRMR: Error invalid regression model!!")
 			sys.exit()
 
 	def get_multiID(self,model,batch_point):

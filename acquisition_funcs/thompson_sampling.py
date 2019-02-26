@@ -16,7 +16,7 @@ def TS(object):
 			return self.get_multiID(model=model, batch_point=batch_point)
 		
 		else:
-			print("BUCB: Error invalid regression model!!")
+			print("TS: Error invalid regression model!!")
 			sys.exit()
 
 	def get_multiID(self,model,batch_point):
@@ -28,7 +28,7 @@ def TS(object):
 		##### model prediction #####
 		print(" >> gaussian process regression...")
 		model.fit()
-		g = model.predict(return_var=True)
+		g = model.predict(return_cov=True)
 		print("    complete")
 
 		sample = np.random.multivariate_normal(g["mean"],g["cov"],1)
