@@ -27,7 +27,7 @@ class asyEI(object):
 		z = (I - xi)/np.sqrt(var)
 		ei = (I - xi) * norm.cdf(z) + np.sqrt(var) * norm.pdf(z)
 
-		ei[ei!=ei] = 0
+		ei[ei!=ei] = 0 
 		ei[ei<0] = 0
 
 		return ei
