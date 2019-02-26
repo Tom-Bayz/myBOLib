@@ -4,7 +4,7 @@ import time
 
 ##### scipy #####
 from scipy.stats import truncnorm
-from scipy.stats import norm
+from scipy.stats import norm 
 
 ##### others #####
 from tqdm import tqdm
