@@ -20,7 +20,13 @@ _ ,d = np.shape(X)
 ##### GPR instance #####
 kernel = kf.RBF(50,"median")
 GP = bol.GPR.GPRegression(allX=X, allY=Y,kernel=kernel, input_dim=d)
+
+##### set acquisition function #####
 acquisition = af.asyEI(sampleN = 500,visualize = True)
+#acquisition = af.PMES(sampleN = 50,visualize = True)
+#acquisition = af.mRMR(sampleN = 20,visualize = True,type="div")
+#acquisition = af.EI(visualize = True)
+#acquisition = af.BUCB(visualize = True)
 
 ##### Parallel BO instance #####
 PBO = bol.PBO.Parallel_BayesOpt(GPR=GP,acq=acquisition,J=WorkerN)
