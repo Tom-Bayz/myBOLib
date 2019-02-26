@@ -119,55 +119,55 @@ class asyEI(object):
 		
 		return nextID, max(acq)
 
-		def plot():
-			Lcb = mu - np.sqrt(var)
-			Ucb = mu + np.sqrt(var)
+	def plot():
+		Lcb = mu - np.sqrt(var)
+		Ucb = mu + np.sqrt(var)
 
-			x = model.allX[:,0]
-			y = model.allY
+		x = model.allX[:,0]
+		y = model.allY
 
-			fig, ax = plt.subplots(3, 1, figsize=(4, 7))
+		fig, ax = plt.subplots(3, 1, figsize=(4, 7))
 
-			ax[0].grid(True)
-			ax[0].set_xlim(min(x),max(x))
-			ax[0].set_xlabel(r"$x$",fontsize=15)
-			ax[0].plot(x, y, "--", color="red") # true function
-			ylim = np.array(ax[0].set_ylim())*1.1
-			ax[0].set_ylim(ylim)
-			ax[0].fill_between(x, Ucb, Lcb, color="blue", alpha=0.4,label="Uncertainty: "+r"$\sigma(x)$") # post var
-			ax[0].plot(x, y, "--", color="red",label="unknown function:" + r"$f(x)$") # true function
-			ax[0].plot(x, mu, "-", color="blue",label="prediction: "+r"$\mu(x)$") # post var
+		ax[0].grid(True)
+		ax[0].set_xlim(min(x),max(x))
+		ax[0].set_xlabel(r"$x$",fontsize=15)
+		ax[0].plot(x, y, "--", color="red") # true function
+		ylim = np.array(ax[0].set_ylim())*1.1
+		ax[0].set_ylim(ylim)
+		ax[0].fill_between(x, Ucb, Lcb, color="blue", alpha=0.4,label="Uncertainty: "+r"$\sigma(x)$") # post var
+		ax[0].plot(x, y, "--", color="red",label="unknown function:" + r"$f(x)$") # true function
+		ax[0].plot(x, mu, "-", color="blue",label="prediction: "+r"$\mu(x)$") # post var
 
-			##### plot training point and calcurating point #####
-			ax[0].plot(x[model.trainID], y[model.trainID], "s", color="black",label="observed Data")
-			ax[0].plot(x[batch_point], y[batch_point], "o",marker=">", color="black",label="batch points")
-			ax[0].legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=12)
+		##### plot training point and calcurating point #####
+		ax[0].plot(x[model.trainID], y[model.trainID], "s", color="black",label="observed Data")
+		ax[0].plot(x[batch_point], y[batch_point], "o",marker=">", color="black",label="batch points")
+		ax[0].legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0, fontsize=12)
 
-			##### plot acquisition function #####
-			ax[1].set_xlim(min(x),max(x))
-			ax[1].set_xlabel(r"$x$",fontsize=15)
-			ax[1].grid(True)
-			ax[1].plot(x,acq,color="#228b22",label="asyEI")
-			ylim = ax[1].set_ylim()
-			ax[1].plot([x[nextID]],[asyei[nextID]],"o",marker="*",markersize=10,color="red")
-			ax[1].fill_between(x,ylim[0]*np.ones(N),acq,color="#228b22",alpha=0.5)
-			ax[1].legend()
+		##### plot acquisition function #####
+		ax[1].set_xlim(min(x),max(x))
+		ax[1].set_xlabel(r"$x$",fontsize=15)
+		ax[1].grid(True)
+		ax[1].plot(x,acq,color="#228b22",label="asyEI")
+		ylim = ax[1].set_ylim()
+		ax[1].plot([x[nextID]],[asyei[nextID]],"o",marker="*",markersize=10,color="red")
+		ax[1].fill_between(x,ylim[0]*np.ones(N),acq,color="#228b22",alpha=0.5)
+		ax[1].legend()
 
-			##### optional #####
-			ax[2].set_xlim(min(x),max(x))
-			ax[2].set_xlabel(r"$x$",fontsize=15)
-			ax[2].grid(True)
-			ax[2].plot(x,sample_ei[0,:],color="blue",alpha=0.2,label="EI samples")
-			for s in range(1,self.sampleN):
-				ax[2].plot(x,sample_ei[s,:],color="blue",alpha=0.2)
+		##### optional #####
+		ax[2].set_xlim(min(x),max(x))
+		ax[2].set_xlabel(r"$x$",fontsize=15)
+		ax[2].grid(True)
+		ax[2].plot(x,sample_ei[0,:],color="blue",alpha=0.2,label="EI samples")
+		for s in range(1,self.sampleN):
+			ax[2].plot(x,sample_ei[s,:],color="blue",alpha=0.2)
 
-			ax[2].legend()
+		ax[2].legend()
 
-			if not(os.path.exists("./fig_asyEI")):
-				os.mkdir("./fig_asyEI")
+		if not(os.path.exists("./fig_asyEI")):
+			os.mkdir("./fig_asyEI")
 
-			t = np.shape(model.trainID)[0]
-			plt.savefig("./fig_asyEI/step"+"%04d"%t+".pdf",bbox_inches="tight")
-			plt.close()
+		t = np.shape(model.trainID)[0]
+		plt.savefig("./fig_asyEI/step"+"%04d"%t+".pdf",bbox_inches="tight")
+		plt.close()
 		
 		
