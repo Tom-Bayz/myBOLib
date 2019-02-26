@@ -22,10 +22,10 @@ class asyEI(object):
 		self.sampleN = sampleN
 		self.type = "Parallel BayesOpt"
 
-	def ei(self,mu, sigma, current_max ,xi=0):
-		I = mu - current_max
-		z = (I - xi)/sigma
-		ei = (I - xi) * norm.cdf(z) + sigma * norm.pdf(z)
+	def ei(self,mean, var, current_max ,xi=0):
+		I = mean - current_max
+		z = (I - xi)/np.sqrt(var)
+		ei = (I - xi) * norm.cdf(z) + np.sqrt(var) * norm.pdf(z)
 
 		ei[ei!=ei] = 0
 		ei[ei<0] = 0
