@@ -133,8 +133,12 @@ class MTGPRegression(object):
 		print("================================")
 
 		return True
-	@jit
+	#@jit
 	def model_select(self):
+
+		if self.task_num <= 0:
+			print("No objective function was loaded.")
+			sys.exit()
 
 		##### prepaer allX #####
 		if self.allX == []:
@@ -196,6 +200,10 @@ class MTGPRegression(object):
 		return np.array(candidate), np.array(ml_record)
 	@jit
 	def fit(self):
+
+		if self.task_num <= 0:
+			print("No objective function was loaded.")
+			sys.exit()
 
 		##### load training point #####
 		all_trainID = np.sort(np.atleast_2d(self.gps[0].trainID))
@@ -326,6 +334,10 @@ class MTGPRegression(object):
 		return chol
 	@jit
 	def predict(self,return_cov=False,return_var=False):
+
+		if self.alpha == []:
+			print("please execute fit() first.")
+			sys.exit()
 
 		##### prepaer allX #####
 		if self.allX == []:

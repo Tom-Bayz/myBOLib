@@ -7,7 +7,7 @@ import pickle
 mtgpr=bol.MTGPR.MTGPRegression(input_dim=1,task_dim=[1],task_des_Num=1,in_norm=False)
 np.random.seed(7)
 
-for i,func in enumerate(np.sort(glob.glob("./synthetic_Data/*"))):
+for i,func in enumerate(np.sort(glob.glob("./synthetic_Data/func_*.pickle"))):
 
 	with open(func,"rb") as f:
 		data = pickle.load(f,encoding='latin1')
