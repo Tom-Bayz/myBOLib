@@ -2,7 +2,7 @@
 Definition of Multi-task Gaussian Process Regression
 
 12/01/2018
-Written by Tomohiro Yonezu
+Written by T.Yonezu
 
 ver.3.2.1
 	can use multipul task-descriptor (e.g task_des1=> RDF, task_des2=> GB rotate angle
@@ -171,7 +171,7 @@ class MTGPRegression(object):
 			c = base*(10**(np.linspace(-3,3,grid_num,endpoint=True)))[:,np.newaxis]
 			candidate.append(c)
 
-		candidate = yz.gen_mesh(candidate)
+		candidate = gen_mesh(candidate)
 		para_num = np.shape(candidate)[0]
 
 		maxML = -np.inf
