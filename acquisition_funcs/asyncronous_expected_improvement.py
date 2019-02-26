@@ -31,7 +31,7 @@ class asyEI(object):
 		ei[ei<0] = 0
 
 		return ei
-
+	@jit
 	def subproc(self,args):
 
 		model = args[0]
@@ -48,9 +48,7 @@ class asyEI(object):
 		sample_ei=self.ei(mu=halc_mu,sigma=halc_var,current_max= np.max(model.halcY[np.sort(model.halc_trainID)]))
 
 		return sample_ei
-
-
-	#@jit
+		
 	def get_nextID(self,model=None,batch_point=None):
 
 		J = np.shape(batch_point)[0]
