@@ -22,7 +22,7 @@ class GPRegression(object):
 	"""
 
 	def __init__(self, allX, allY, kernel=kf.RBF(), mean=mf.Const(), input_dim=-1,in_norm=True,out_norm=True):
-		self.name = "Gaussian Process"
+		self.name = "Gaussian process"
 		self.kernel = copy.copy(kernel)
 		self.mean = copy.copy(mean)
 

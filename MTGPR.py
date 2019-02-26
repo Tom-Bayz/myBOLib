@@ -66,7 +66,7 @@ class MTGPRegression(object):
 		self.epsilon = -6
 
 		##### instance name #####
-		self.name = "Multi-task Gaussian Process"
+		self.name = "Multi-task Gaussian process"
 
 	def add_objFunc(self, name=None, allX=None, allY=None, task_descriptor=None, trainID=None,  cost=1):
 		##### add objective function #####

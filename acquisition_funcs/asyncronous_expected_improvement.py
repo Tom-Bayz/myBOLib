@@ -31,6 +31,7 @@ class asyEI(object):
 		ei[ei<0] = 0
 
 		return ei
+	
 	@jit
 	def subproc(self,args):
 
@@ -48,19 +49,28 @@ class asyEI(object):
 		sample_ei=self.ei(mu=halc_mu,sigma=halc_var,current_max= np.max(model.halcY[np.sort(model.halc_trainID)]))
 
 		return sample_ei
-		
+
 	def get_nextID(self,model=None,batch_point=None):
+
+		if model.name == "Gaussian process":
+			self.get_singleID(model=model, batch_point=batch_point)
+			self.get_singleID.plot()
+
+		elif model.name == "Multi-task Gaussian process":
+			self.get_multiID(model=model, batch_point=batch_point)
+		
+		else:
+			print("asyEI: Error invalid regression model!!")
+			sys.exit()
+	
+	def get_multiID(self,model,batch_point):
+		print("this process is not prepared...")
+		sys.exit()
+	
+	def get_singleID(self,model,batch_point):
 
 		J = np.shape(batch_point)[0]
 		N = np.shape(model.allX)[0]
-
-		##### check model #####
-		if model.name != "Gaussian Process":
-			print("asyEI can be calcurated only from Gaussian Process model.")
-			return False
-
-		model = model
-		batch_point = batch_point
 
 		##### model prediction #####
 		print(" >> gaussian process regression...")
@@ -105,10 +115,7 @@ class asyEI(object):
 		if np.shape([nextID])[0] > 1:
 			nextID = np.random.choice(nextID)
 
-		#"""
-		##### plot true function and posterior #####
-		if self.visualize and (np.shape(model.allX)[1] == 1):
-
+		def plot():
 			Lcb = mu - np.sqrt(var)
 			Ucb = mu + np.sqrt(var)
 
@@ -158,6 +165,5 @@ class asyEI(object):
 			t = np.shape(model.trainID)[0]
 			plt.savefig("./fig_asyEI/step"+"%04d"%t+".pdf",bbox_inches="tight")
 			plt.close()
-			#"""
-
+		
 		return nextID, max(acq)
