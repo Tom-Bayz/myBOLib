@@ -86,15 +86,15 @@ class Parallel_BayesOpt(object):
 		passed = 0
 
 		##### inference regret #####
-		#self.GPR.model_select()
-		#self.GPR.fit()
-		#self.GPR.predict()
-		#Inf_r = np.abs(global_maximum - self.GPR.allY[np.argmax(self.GPR.pred_dist["mean"])])
-		#inference_regret.append(Inf_r)
+		self.GPR.model_select()
+		self.GPR.fit()
+		self.GPR.predict()
+		Inf_r = np.abs(global_maximum - self.GPR.allY[np.argmax(self.GPR.pred_dist["mean"])])
+		inference_regret.append(Inf_r)
 
 		##### simple regret #####
-		#Smp_r = np.abs(global_maximum - np.max(self.GPR.allY[np.sort(self.GPR.trainID)]))
-		#simple_regret.append(Smp_r)
+		Smp_r = np.abs(global_maximum - np.max(self.GPR.allY[np.sort(self.GPR.trainID)]))
+		simple_regret.append(Smp_r)
 
 		for t in range(T):
 

@@ -46,18 +46,17 @@ class asyEI(object):
 		halc_mu = halc_pred["mean"]
 		halc_var = halc_pred["var"]
 
-		sample_ei=self.ei(mu=halc_mu,sigma=halc_var,current_max= np.max(model.halcY[np.sort(model.halc_trainID)]))
+		sample_ei=self.ei(mean=halc_mu,var=halc_var,current_max= np.max(model.halcY[np.sort(model.halc_trainID)]))
 
 		return sample_ei
 
 	def get_nextID(self,model=None,batch_point=None):
 
 		if model.name == "Gaussian process":
-			self.get_singleID(model=model, batch_point=batch_point)
-			self.get_singleID.plot()
+			return self.get_singleID(model=model, batch_point=batch_point)
 
 		elif model.name == "Multi-task Gaussian process":
-			self.get_multiID(model=model, batch_point=batch_point)
+			return self.get_multiID(model=model, batch_point=batch_point)
 		
 		else:
 			print("asyEI: Error invalid regression model!!")
@@ -68,7 +67,6 @@ class asyEI(object):
 		print("this process is not prepared...")
 		sys.exit()
 	
-	@jit
 	def get_singleID(self,model,batch_point):
 
 		J = np.shape(batch_point)[0]

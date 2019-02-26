@@ -35,11 +35,12 @@ for i,gp in enumerate(mtgpr.gps):
 	mean = gp.pred_dist["mean"]
 	var = gp.pred_dist["var"]
 
-	plt.plot(x,mean,label="mean")
-	plt.fill_between(x,mean-np.sqrt(var),mean+np.sqrt(var),label="var",alpha=0.3,label="function No."+str(i))
+	plt.plot(x,mean,label="function No."+str(i))
+	plt.fill_between(x,mean-np.sqrt(var),mean+np.sqrt(var),alpha=0.3)
 	plt.plot(x[train],mean[train],"o",marker="s",markersize=8,color="black")
 
 plt.xlabel(r"$x$",fontsize=15)
 plt.ylabel(r"$f(x)$",fontsize=15)
 plt.xlim(min(x),max(x))
+plt.legend()
 plt.show()

@@ -7,7 +7,6 @@ import numpy as np
 
 ##### original package #####
 import myBOLib as bol
-import yonezu as yz
 kf = bol.kernel_funcs
 af = bol.acquisition_funcs
 
@@ -30,7 +29,7 @@ def PBO_asyEI(X,Y,WorkerN=1,T=50,seed=0,init_dataN=1):
 
 if __name__ == "__main__":
 
-    data = np.loadtxt("../BO_benchmark_data/Forrester.csv",dtype="float",delimiter=",")
+    data = np.loadtxt("./synthetic_Data/Forrester.csv",dtype="float",delimiter=",")
     X = data[:,:-1]
     Y = data[:,-1]
 
