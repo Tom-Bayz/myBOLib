@@ -1,8 +1,8 @@
 """
 Definition of Gaussian Process Regression
 
-23/01/2019 ver 1.0.0
-Tomohiro Yonezu
+23/01/2019 ver 1.0.0 
+T.Yonezu
 """
 import numpy as np
 import scipy.linalg as splinalg
