@@ -1,8 +1,5 @@
 import numpy as np
 
-##### original package #####
-import yonezu as yz
-
 ##### scipy #####
 import scipy
 from scipy.stats import truncnorm
@@ -70,7 +67,7 @@ class PMES(object):
 						jth_space = np.unique(np.linspace(lower[j],upper[j],grid_num))[:,np.newaxis]
 						grid.append(jth_space)
 
-					grid = yz.gen_mesh(grid)
+					grid = gen_mesh(grid)
 					H = np.array(multivariate_normal.pdf(grid,mean=sub_mu, cov=sub_cov,allow_singular=True)) # compute pdf
 
 					H = H[H >= 1e-9]
@@ -262,3 +259,28 @@ class PMES(object):
 		t = np.shape(model.trainID)[0]
 		plt.savefig("./fig_PMES/step"+"%04d"%t+".pdf",bbox_inches="tight")
 		plt.close()
+
+def marge_grid(x1,x2):
+
+    x1 = np.atleast_2d(x1)
+    x2 = np.atleast_2d(x2)
+
+    x1size = np.shape(x1)[0]
+    x2size = np.shape(x2)[0]
+
+    X = np.c_[np.repeat(x1,x2size,axis=0),np.tile(x2,(x1size,1))]
+
+    return X
+
+def gen_mesh(argX):
+
+    if np.shape(argX)[0] == 0:
+        print("You should at least 2 arguments.")
+        sys.exit()
+
+    X = argX[0]
+
+    for x in argX[1:]:
+        X = marge_grid(X,x)
+
+    return X
