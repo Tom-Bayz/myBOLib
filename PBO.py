@@ -18,12 +18,8 @@ class Parallel_BayesOpt(object):
 
 	def __init__(self,GPR=None,acq=None,J=2,cost=None):
 
-		##### initialize GPR #####
-		if GPR is None:
-			print("please input GPR!!")
-			return False
-		else:
-			self.GPR = GPR
+		
+		self.GPR = GPR
 
 		self.N = np.shape(self.GPR.allX)[0]
 		self.J = J
