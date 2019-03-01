@@ -10,7 +10,7 @@ from scipy.spatial import distance
 
 ##### others #####
 from tqdm import tqdm
-from matplotlib import pyplot as plt 
+from matplotlib import pyplot as plt
 from numba import jit
 from numpy.linalg import norm
 
