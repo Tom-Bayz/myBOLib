@@ -7,3 +7,4 @@ from .parallel_maxvalue_entropy_search import *
 from .mRedundancy_MRelevative import *
 from .asyncronous_expected_improvement import *
 from .batch_upper_confidence_bound import *
+from .local_penalization import *

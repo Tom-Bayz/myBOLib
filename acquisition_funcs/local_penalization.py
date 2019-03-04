@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import time
+import sys
 
 ##### scipy #####
 from scipy.stats import truncnorm
@@ -12,12 +13,13 @@ from scipy.spatial import distance
 from tqdm import tqdm
 from matplotlib import pyplot as plt
 from numba import jit
-from numpy.linalg import norm
+from scipy.stats import norm
 
 class LP(object):
 
-	def __init__(self,Lipschitz_const=5,type="EI"):
+	def __init__(self,Lipschitz_const=0.05,type="EI"):
 		self.L = Lipschitz_const
+		self.base_acq = type
 		self.type = "Parallel BayesOpt"
 
 	def ei(self,mean, var, current_max ,xi=0):
@@ -39,13 +41,16 @@ class LP(object):
 		N = np.shape(mean)[0]
 
 		d = distance.cdist(np.atleast_2d(X[batch_point,:]), X, "euclidean")
+
+		plt.show()
+		
 		v = np.tile(var[batch_point][:,np.newaxis],(1,N))
 		m = np.tile(mean[batch_point][:,np.newaxis],(1,N))
 		M = np.max(mean)
 
 		z = (1/np.sqrt(2*v)) * (self.L*d - M + m)
 
-		lp = np.prod(erfc(-z),axis=0)
+		lp = np.prod(0.5*erfc(-z),axis=0)
 
 		return lp
 
@@ -67,12 +72,12 @@ class LP(object):
 	
 	def get_singleID(self,model,batch_point):
 
-		J = np.shape(Worker["now_p"])[0]
+		J = np.shape(batch_point)[0]
 		d, N = np.shape(model.allX)
 
 		elapsed_time = time.time()
 
-		if self.type == "EI":
+		if self.base_acq == "EI":
 			print(" >> gaussian process regression...")
 			model.fit()
 			g = model.predict(return_var=True)
@@ -85,7 +90,7 @@ class LP(object):
 			print(" >> start calc LP-EI acquisition...")
 			acq = self.ei(mean=mu,var=var,current_max=current_max)
 		
-		elif self.type == "UCB":
+		elif self.base_acq == "UCB":
 			print(" >> gaussian process regression...")
 			model.fit()
 			g = model.predict(return_var=True)
@@ -104,7 +109,15 @@ class LP(object):
 			print("LP:invalid type!!")
 			sys.exit()
 
-		acq = acq * self.local_penalizer(model.allX,mean,var,batch_point)
+		acq = acq * self.local_penalizer(model.allX,mu,var,batch_point)
+		"""
+		plt.plot(model.allX[:,0],acq,label="acq")
+		plt.plot(model.allX[:,0],self.local_penalizer(model.allX,mu,var,batch_point),label="local penalizer")
+		ylim = plt.ylim()
+		plt.plot(model.allX[batch_point,0],[ylim[0]],"o",label="batch_point")
+		plt.legend()
+		plt.show()
+		"""
 
 		elapsed_time = time.time() - elapsed_time
 		print("    complete (time "+str(int(elapsed_time/60))+":%02d"%(elapsed_time%60)+")")
