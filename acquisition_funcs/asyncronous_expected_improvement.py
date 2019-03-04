@@ -13,7 +13,7 @@ from numba import jit
 import math
 
 ##### multi-core processing #####
-import multiprocessing as mproc
+import multiprocessing as mproc 
 
 class asyEI(object):
 
