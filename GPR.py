@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 from numba import jit
 import scipy
 
+
+
 class GPRegression(object):
 	"""
 	1. get Covariance matrix by using kernel class
